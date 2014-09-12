@@ -18,6 +18,7 @@ class Tool implements ControlListener
   void select(){}
   void unselect(){}
   void mousePressed(){}
+  void mouseDragged(){}
   void keyPressed(){}
 
   void initControls(){}
@@ -116,6 +117,15 @@ class ToolManager extends ArrayList<Tool>
     if (toolSelected !=null)
       toolSelected.mousePressed();
   }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void mouseDragged()
+  {
+    if (toolSelected !=null)
+      toolSelected.mouseDragged();
+  }
+
   
   // --------------------------------------------------------------------
   // --------------------------------------------------------------------
