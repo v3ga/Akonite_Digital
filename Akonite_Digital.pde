@@ -16,6 +16,7 @@ import java.io.*;
 import java.util.*; 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.processing.wiki.triangulate.*;
+import toxi.geom.*;
 
 
 // --------------------------------------------------------------------
@@ -23,20 +24,28 @@ ControlP5 cp5;
 ToolManager toolManager;
 ToolMap toolMap;
 ToolSkis toolSkis;
+ToolParticles toolParticles;
 StationManager stations;
 
 // Variable pour stocker la carte
 de.fhpotsdam.unfolding.Map map;
+
 // Couleur pour le dessin des stations sur la carte
 color colorStation = color(0,0,0);
 color colorStationLines = color(60,60,60);
+
+// Couleur pour le dessin des bounding boxes
+color colorBounding = color(200,0,0,100);
+
 // Départements à considérer pour l'application
-int[] filterStationDep = {4,5,6,38,73,74};
+int[] filterStationDep = {/*4,5,6,38,*/73,74};
 int idStationMin = 7400;
 int idStationMax = 7499;
 int filterStationMode = 1; // 0 = par id, 1 par département, 2 = tout
+
 // Position (lat, lon) au démarrage de l'application
 float[] locMapStart = {45.05447, 6.4686};
+
 // Zoom par défaut au démarrage de l'application
 float zoomMapStart = 7.0; 
 
@@ -47,13 +56,16 @@ void setup()
 {
   size(1024,768,P3D);
   
-  // Libs
+  
+    println( 100.0f < Float.POSITIVE_INFINITY ? "OK" : "HUM" );
+// Libs
   RG.init(this);
   
   // Tools
   toolManager = new ToolManager(this);
   toolMap = new ToolMap(this);
   toolSkis = new ToolSkis(this);
+  toolParticles = new ToolParticles(this);
 
   // Stations
   stations = new StationManager();
@@ -63,6 +75,7 @@ void setup()
   // Tools
   toolManager.addTool ( (Tool) toolMap ); 
   toolManager.addTool ( (Tool) toolSkis ); 
+  toolManager.addTool ( (Tool) toolParticles ); 
 
   // Controls
   toolManager.initControls(this);

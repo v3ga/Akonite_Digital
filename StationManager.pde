@@ -7,6 +7,9 @@ class Station
   int dep = 0;
   de.fhpotsdam.unfolding.geo.Location loc;
   float xy[];
+  PVector posBoundingNorm = new PVector();
+  RPoint posBoundingNorm2 = new RPoint(); // normalized & relative to the upper left corner of the bounding rect
+  RPoint posBoundingNorm3 = new RPoint(); // normalized & relative to the center of the bounding rect
 
   // --------------------------------------------------------------------
   // --------------------------------------------------------------------
@@ -40,6 +43,23 @@ class Station
     setLoc(lat_, lon_);
     this.altitude = Float.parseFloat(altitude);
   }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void computePositionBounding(Rect bounding_)
+  {
+    // Store in PVector
+    this.posBoundingNorm.set( (this.xy[0]-bounding_.x)/bounding_.width, (this.xy[1]-bounding_.y)/bounding_.height);
+
+    // Store in RPoint
+    this.posBoundingNorm2.x = this.posBoundingNorm.x; 
+    this.posBoundingNorm2.y = this.posBoundingNorm.y; 
+
+    this.posBoundingNorm3.x = this.posBoundingNorm.x - 0.5; 
+    this.posBoundingNorm3.y = this.posBoundingNorm.y - 0.5; 
+  }
+
+
 
   // --------------------------------------------------------------------
   // --------------------------------------------------------------------
@@ -86,7 +106,7 @@ class StationManager extends ArrayList<Station>
         Station s = new Station( doc.getCellContent(i, "numer_sta"), doc.getCellContent(i, "nom usuel") );
         s.setLocAndAltitude( doc.getCellContent(i, "latitude"), doc.getCellContent(i, "longitude"), doc.getCellContent(i, "altitude") );
         s.setDepartement( doc.getCellContent(i, "departement") );
-println(s.id);
+
         add(s);
       }
     }

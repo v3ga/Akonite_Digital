@@ -10,6 +10,9 @@ class ToolMap extends Tool implements MapEventListener
   // Triangles
   ArrayList triangles;
 
+  // Bounding box for geoloc points, screen related
+  Rect boundingStations = new Rect();
+
   // Properties
   //  boolean isDrawLinks = true;
   boolean isDrawIndexes = false;
@@ -37,15 +40,15 @@ class ToolMap extends Tool implements MapEventListener
   // --------------------------------------------------------------------
   void initControls()
   {
-    String tabMap = "default";
-    tabName = tabMap;
-
+    this.tabName = "default";
+    super.initControls();
+    
     // Tab Properties
-    cp5.tab(tabMap).activateEvent(true);
-    cp5.tab(tabMap).setHeight(20);
-    cp5.tab(tabMap).captionLabel().style().marginTop = 2;
-    cp5.tab(tabMap).setId(id);
-    cp5.tab(tabMap).setLabel("Carte");
+    cp5.tab(tabName).activateEvent(true);
+    cp5.tab(tabName).setHeight(20);
+    cp5.tab(tabName).captionLabel().style().marginTop = 2;
+    cp5.tab(tabName).setId(id);
+    cp5.tab(tabName).setLabel("Carte");
 
     // Controls
     int x = 2;
@@ -60,9 +63,9 @@ class ToolMap extends Tool implements MapEventListener
     // Zoom
     float zoomMin = 1.0;
     float zoomMax = 10.0;
-    sliderZoom = cp5.addSlider("Zoom", zoomMin, zoomMax, 7.0, x, y, 150, 20).addListener(this);
+    sliderZoom = cp5.addSlider("zoom", zoomMin, zoomMax, 7.0, x, y, 150, 20).addListener(this);
     sliderZoom.setNumberOfTickMarks(int(zoomMax-zoomMin)+1);
-    sliderZoom.moveTo(tabMap);
+    sliderZoom.moveTo(tabName);
 
     // Links
     /*
@@ -75,7 +78,7 @@ class ToolMap extends Tool implements MapEventListener
     // Indexes
     y+=32;  
     Toggle toggleDrawIndexes = cp5.addToggle("Index", toolMap.isDrawIndexes, x, y, 20, 20).addListener(this);  
-    toggleDrawIndexes.moveTo(tabMap);
+    toggleDrawIndexes.moveTo(tabName);
     toggleDrawIndexes.captionLabel().style().marginLeft = toggleMarginLeft;
     toggleDrawIndexes.captionLabel().style().marginTop = toggleMarginTop;
   }
@@ -149,10 +152,41 @@ class ToolMap extends Tool implements MapEventListener
   // --------------------------------------------------------------------
   void update()
   {
+    // Update stations (position on screens)
     for (Station station : stations) {
       station.update();
     }
+    
+    // Compute Bounding box
+    computeBoundingsStations();
+
+    // Compute Voronoi
     triangles = triangulateStations();
+  }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void computeBoundingsStations()
+  {
+    // Compute bounding box on screens
+    float xMin = Float.POSITIVE_INFINITY, xMax = Float.NEGATIVE_INFINITY;    
+    float yMin = Float.POSITIVE_INFINITY, yMax = Float.NEGATIVE_INFINITY;    
+    for (Station station : stations) 
+    {
+      if (station.xy[0]<xMin) xMin = station.xy[0];
+      if (station.xy[0]>xMax) xMax = station.xy[0];
+
+      if (station.xy[1]<yMin) yMin = station.xy[1];
+      if (station.xy[1]>yMax) yMax = station.xy[1];
+    }    
+
+    boundingStations.set(xMin,yMin,xMax-xMin,yMax-yMin);
+
+    // Compute normalized positions of stations relative to this bounding box
+    for (Station station : stations) 
+    {
+      station.computePositionBounding(boundingStations);
+    }
   }
 
   // --------------------------------------------------------------------
@@ -196,6 +230,10 @@ class ToolMap extends Tool implements MapEventListener
         text(station.name, station.xy[0]+6, station.xy[1]);
       }
     }
+    
+    noFill();
+    stroke(colorBounding);
+    rect(boundingStations.x,boundingStations.y,boundingStations.width,boundingStations.height);
 
     popStyle();
   }

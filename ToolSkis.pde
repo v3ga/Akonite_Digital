@@ -22,15 +22,9 @@ class ToolSkis extends Tool
 
   void initControls()
   {
-    String tabMap = "skis";
-    tabName = tabMap;
-
     // Tab Properties
-    cp5.tab(tabMap).activateEvent(true);
-    cp5.tab(tabMap).setHeight(20);
-    cp5.tab(tabMap).captionLabel().style().marginTop = 2;
-    cp5.tab(tabMap).setId(id);
-    cp5.tab(tabMap).setLabel("Skis");
+    this.tabName = "skis";
+    super.initControls();
 
     // Controls
     int x = 2;
@@ -38,8 +32,8 @@ class ToolSkis extends Tool
 
     float zoomMin = 1.0;
     float zoomMax = 10.0;
-    Slider sliderZoom = cp5.addSlider("Zoom", zoomMin, zoomMax, 7.0, x, y, 150, 20).addListener(this);
-    sliderZoom.moveTo(tabMap);
+    Slider sliderZoom = cp5.addSlider("zoomPanel", zoomMin, zoomMax, 7.0, x, y, 150, 20).addListener(this);
+    sliderZoom.moveTo(this.tabName);
   }
 
   void setup()
@@ -66,6 +60,7 @@ class ToolSkis extends Tool
 
   void draw()
   {
+    pushStyle();
     background(255);
     pushMatrix();
     translate(width/2, height/2);
@@ -74,17 +69,28 @@ class ToolSkis extends Tool
     translate(offset.x/zoom, offset.y/zoom);
 
     //    skiRight.draw();
-    //    skiLeft.draw();
-    skiBoth.draw();
-    //  drawBounding(skiLeft);
     //drawBounding(skiRight);
+    //    skiLeft.draw();
+    //  drawBounding(skiLeft);
+    skiBoth.draw();
+    drawBounding(skiBoth);
+    
+    // Draw stations inside
+    fill(colorStation);
+    noStroke();
+    for (Station s : stations)
+    {
+      ellipse(s.posBoundingNorm3.x*skiBoth.getWidth(), s.posBoundingNorm3.y*skiBoth.getHeight(), 5,5);    
+    }
+
     popMatrix();
+    popStyle();
   }
 
   void drawBounding(RShape shape_)
   {
     RPoint[] rect = shape_.getBoundsPoints();
-    stroke(200);
+    stroke(colorBounding);
     beginShape(QUADS);
     for (int i=0;i<rect.length;i++) {
       vertex(rect[i].x, rect[i].y);
@@ -102,6 +108,17 @@ class ToolSkis extends Tool
   void mouseDragged() {
     offset.x = mouseX - mouse.x + poffset.x;
     offset.y = mouseY - mouse.y + poffset.y;
+  }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  public void controlEvent(ControlEvent theEvent)
+  {
+    String nameSource = theEvent.name();
+    if (nameSource.equals("zoomPanel"))
+    {
+        zoom = theEvent.value();
+    }
   }
 }
 

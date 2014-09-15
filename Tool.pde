@@ -21,7 +21,14 @@ class Tool implements ControlListener
   void mouseDragged(){}
   void keyPressed(){}
 
-  void initControls(){}
+  void initControls()
+  {
+    cp5.tab(tabName).activateEvent(true);
+    cp5.tab(tabName).setHeight(20);
+    cp5.tab(tabName).captionLabel().style().marginTop = 2;
+    cp5.tab(tabName).setId(id);
+    cp5.tab(tabName).setLabel(tabName);
+  }
   public void controlEvent(ControlEvent theEvent) {}
 }
 
