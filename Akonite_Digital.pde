@@ -12,11 +12,12 @@ import de.fhpotsdam.utils.*;
 import de.fhpotsdam.unfolding.providers.*;
 import geomerative.*;
 import controlP5.*;
-import java.io.*;
 import java.util.*; 
-import org.apache.poi.ss.usermodel.Sheet;
 import org.processing.wiki.triangulate.*;
 import toxi.geom.*;
+import blobDetection.*;
+import peasy.*;
+import processing.pdf.*;
 
 
 // --------------------------------------------------------------------
@@ -25,6 +26,7 @@ ToolManager toolManager;
 ToolMap toolMap;
 ToolSkis toolSkis;
 ToolParticles toolParticles;
+ToolModel toolModel;
 StationManager stations;
 
 // Variable pour stocker la carte
@@ -38,7 +40,8 @@ color colorStationLines = color(60,60,60);
 color colorBounding = color(200,0,0,100);
 
 // Départements à considérer pour l'application
-int[] filterStationDep = {/*4,5,6,38,*/73,74};
+int[] filterStationDep = {4,5,6,38,73,74};
+//int[] filterStationDep = {5};
 int idStationMin = 7400;
 int idStationMax = 7499;
 int filterStationMode = 1; // 0 = par id, 1 par département, 2 = tout
@@ -54,10 +57,9 @@ float zoomMapStart = 7.0;
 // --------------------------------------------------------------------
 void setup()
 {
-  size(1024,768,P3D);
-  
-  
-    println( 100.0f < Float.POSITIVE_INFINITY ? "OK" : "HUM" );
+  size(1200,900,P3D);
+  // println( 100.0f < Float.POSITIVE_INFINITY ? "OK" : "HUM" );
+
 // Libs
   RG.init(this);
   
@@ -66,16 +68,18 @@ void setup()
   toolMap = new ToolMap(this);
   toolSkis = new ToolSkis(this);
   toolParticles = new ToolParticles(this);
+  toolModel = new ToolModel(this);
 
   // Stations
   stations = new StationManager();
   stations.setup();
-  stations.printStationIds();
+  // stations.printStationIds();
 
   // Tools
   toolManager.addTool ( (Tool) toolMap ); 
   toolManager.addTool ( (Tool) toolSkis ); 
   toolManager.addTool ( (Tool) toolParticles ); 
+  toolManager.addTool ( (Tool) toolModel ); 
 
   // Controls
   toolManager.initControls(this);
@@ -95,6 +99,7 @@ void setup()
 // --------------------------------------------------------------------
 void draw()
 {
+  toolManager.update();
   toolManager.draw();
 }
 

@@ -1,0 +1,107 @@
+<stations w="1.0" h="6.940287">
+	<station important="1" id="7393" dep="74" name="LE TOUR BALME" x="0.22827417" y="0.3550508"/>
+	<station important="0" id="7454" dep="74" name="Bernex" x="0.09427649" y="0.5"/>
+	<station important="0" id="7456" dep="73" name="Aussois" x="0.10566449" y="0.009994745"/>
+	<station important="0" id="7457" dep="74" name="VACHERESSE AUXI" x="0.076773286" y="0.48835903"/>
+	<station important="1" id="7458" dep="74" name="LES CARROZ VILLAGE" x="0.061479867" y="0.35723117"/>
+	<station important="1" id="7470" dep="74" name="LA FLEGERE" x="0.18646348" y="0.32868814"/>
+	<station important="1" id="7474" dep="73" name="CHAMPAGNY" x="0.09037107" y="0.10654244"/>
+	<station important="0" id="7484" dep="38" name="VILLARD-BOIS BARBU" x="-0.5" y="-0.06928134"/>
+	<station important="0" id="7488" dep="38" name="AUTRANS-NIVO" x="-0.48003545" y="-1.6462803E-4"/>
+	<station important="0" id="7489" dep="38" name="St Hilaire" x="-0.32598564" y="0.0359509"/>
+	<station important="0" id="7492" dep="38" name="St Hilaire Gelinottes" x="-0.3253074" y="0.038178295"/>
+	<station important="0" id="7493" dep="38" name="COL D'ORNON" x="-0.28146195" y="-0.09335947"/>
+	<station important="1" id="7498" dep="73" name="Val d Isere Joseray" x="0.23312038" y="0.09463945"/>
+	<station important="1" id="7499" dep="74" name="CHAMONIX-OBS" x="0.17508644" y="0.30879942"/>
+	<station important="1" id="7566" dep="73" name="Bonneval sur Arc" x="0.26880497" y="0.0634222"/>
+	<station important="0" id="7567" dep="73" name="Val Cenis (La Berche)" x="0.20252264" y="0.018890947"/>
+	<station important="0" id="7571" dep="73" name="Termignon" x="0.15154463" y="0.018890947"/>
+	<station important="0" id="7575" dep="5" name="MONTGENEVRE-LE CHALVET" x="0.10030413" y="-0.12832934"/>
+	<station important="0" id="7582" dep="38" name="Olmet" x="-0.2299698" y="-0.04414153"/>
+	<station important="0" id="7583" dep="38" name="Les 2 ALpes Jandri" x="-0.1621669" y="-0.1022892"/>
+	<station important="0" id="7584" dep="38" name="La Berarde" x="-0.11764321" y="-0.13076502"/>
+	<station important="0" id="7589" dep="38" name="St Christophe" x="-0.17049184" y="-0.12456995"/>
+	<station important="0" id="7590" dep="5" name="Les Portes en Valgaudemar" x="-0.16692558" y="-0.18496186"/>
+	<station important="0" id="7594" dep="5" name="MONTGENEVRE GENDARMERIE" x="0.10124493" y="-0.1317259"/>
+	<station important="0" id="7595" dep="5" name="Super_Devoluy" x="-0.3140835" y="-0.24865955"/>
+	<station important="0" id="7596" dep="5" name="REALLON _NIVO" x="-0.08722049" y="-0.28848064"/>
+	<station important="0" id="7599" dep="5" name="GAP-BAYARD" x="-0.22351551" y="-0.26803088"/>
+	<station important="0" id="7696" dep="6" name="Estenc" x="0.11739159" y="-0.43568414"/>
+	<station important="0" id="7697" dep="6" name="Val Casterino" x="0.5" y="-0.5"/>
+	<station important="0" id="7710" dep="5" name="NEVACHE-BUFFERE" x="0.02451539" y="-0.095277786"/>
+	<station important="1" id="7711" dep="73" name="STE FOY STATION" x="0.19063145" y="0.16018155"/>
+	<station important="1" id="7715" dep="5" name="RISOUL" x="0.061906517" y="-0.27015078"/>
+	<station important="1" id="7721" dep="74" name="LES CARROZ KEDEUSAZ" x="0.07507765" y="0.35933763"/>
+	<station important="0" id="7804" dep="74" name="ROC D'ENFER" x="0.05535376" y="0.4428434"/>
+	<station important="1" id="7811" dep="38" name="L Alpe d Huez 2350" x="-0.21551874" y="-0.05664593"/>
+	<station important="1" id="7813" dep="73" name="LA GIETTAZ" x="8.970499E-4" y="0.29125232"/>
+	<station important="0" id="7815" dep="73" name="Orelle" x="0.029186547" y="0.009994745"/>
+	<station important="0" id="7818" dep="38" name="Gresse en Vercors" x="-0.49711198" y="-0.14830542"/>
+	<station important="1" id="7856" dep="74" name="Flaine" x="0.08951777" y="0.34783778"/>
+	<station important="1" id="7858" dep="74" name="Avoriaz" x="0.13124096" y="0.42987207"/>
+	<station important="0" id="7861" dep="74" name="CHATEL NIVO" x="0.13744366" y="0.44442913"/>
+	<station important="0" id="7863" dep="73" name="La Norma" x="0.09037107" y="-0.021128416"/>
+	<station important="1" id="7870" dep="38" name="CHAMROUSSE ARSELLE" x="-0.32972693" y="-0.05723387"/>
+	<station important="0" id="7871" dep="74" name="Seythenex" x="-0.12885618" y="0.21991158"/>
+	<station important="1" id="7872" dep="38" name="PRAPOUTEL" x="-0.26871747" y="0.012732834"/>
+	<station important="1" id="7873" dep="74" name="LE TOUR NIVO" x="0.21679866" y="0.34656447"/>
+	<station important="1" id="7875" dep="38" name="L Alpe d Huez (SATA)" x="-0.22936815" y="-0.05767393"/>
+	<station important="1" id="7876" dep="74" name="Le Grand Bornand" x="-0.035903394" y="0.3325886"/>
+	<station important="0" id="7877" dep="38" name="Le Collet d Allevard" x="-0.20107862" y="0.07367566"/>
+	<station important="0" id="7878" dep="38" name="AURIS-EN-OISANS" x="-0.22758499" y="-0.07563764"/>
+	<station important="0" id="7879" dep="38" name="Les 2 Alpes (GN)" x="-0.20387915" y="-0.09771681"/>
+	<station important="0" id="7880" dep="38" name="Les 2 Alpes (Pied Mouttet)" x="-0.21255416" y="-0.09705162"/>
+	<station important="0" id="7881" dep="38" name="Les 2 Alpes (Toura NE)" x="-0.1789043" y="-0.10244042"/>
+	<station important="0" id="7882" dep="38" name="L Alpe du Grand Serre" x="-0.33771276" y="-0.09099764"/>
+	<station important="0" id="7884" dep="73" name="Les Aillons (Margeriaz)" x="-0.23592088" y="0.18405476"/>
+	<station important="0" id="7885" dep="73" name="Les Karellis" x="-0.057476044" y="0.0010952353"/>
+	<station important="0" id="7886" dep="38" name="Villard cote 2000" x="-0.48555988" y="-0.088044584"/>
+	<station important="1" id="7887" dep="74" name="La Clusaz" x="-0.04134029" y="0.2990499"/>
+	<station important="0" id="7888" dep="73" name="Valmeinier" x="-0.011595845" y="-0.021128416"/>
+	<station important="1" id="7889" dep="73" name="Les Menuires" x="0.008795321" y="0.041144818"/>
+	<station important="1" id="7890" dep="73" name="Val Frejus" x="0.07507765" y="-0.03000778"/>
+	<station important="1" id="7891" dep="73" name="Areches" x="0.008795321" y="0.19749308"/>
+	<station important="0" id="7892" dep="73" name="Meribel Mottaret" x="0.029186547" y="0.0634222"/>
+	<station important="1" id="7893" dep="73" name="Courchevel" x="0.057224452" y="0.08348563"/>
+	<station important="0" id="7894" dep="73" name="Valmorel" x="-0.037084848" y="0.10356587"/>
+	<station important="1" id="7895" dep="73" name="La Plagne" x="0.08017546" y="0.12589702"/>
+	<station important="1" id="7896" dep="73" name="Pralognan" x="0.100566685" y="0.067877024"/>
+	<station important="1" id="7897" dep="74" name="Les Contamines Montjoie" x="0.08850044" y="0.25027883"/>
+	<station important="1" id="7898" dep="74" name="MEGEVE AUXI" x="0.043462574" y="0.28083426"/>
+	<station important="1" id="7900" dep="73" name="Les Arcs" x="0.15664244" y="0.15272328"/>
+	<station important="1" id="7901" dep="73" name="La Rosiere" x="0.16683805" y="0.17957643"/>
+	<station important="1" id="7902" dep="38" name="Chamrousse Niverolles" x="-0.31969544" y="-0.04746753"/>
+	<station important="0" id="7903" dep="38" name="Lans en Vercors" x="-0.46575943" y="-0.0515427"/>
+	<station important="1" id="7904" dep="73" name="Tignes" x="0.19742483" y="0.10803074"/>
+	<station important="0" id="7907" dep="73" name="Le Corbier" x="-0.12885618" y="0.0055399537"/>
+	<station important="1" id="7908" dep="74" name="Lognan" x="0.21416223" y="0.3315438"/>
+	<station important="0" id="7909" dep="38" name="St Pierre de Chartreuse" x="-0.3447578" y="0.052281827"/>
+	<station important="0" id="7911" dep="73" name="Les Saisies" x="0.0036975741" y="0.24235022"/>
+	<station important="0" id="7912" dep="73" name="Bessans" x="0.243316" y="0.041144818"/>
+	<station important="1" id="7913" dep="73" name="Le Molard" x="0.25351155" y="0.09463945"/>
+	<station important="1" id="7915" dep="5" name="La Grave - La Meije" x="-0.11933881" y="-0.0896706"/>
+	<station important="0" id="7916" dep="73" name="ST FRANCOIS LONG" x="-0.08807379" y="0.0857164"/>
+	<station important="0" id="7917" dep="5" name="St Etienne en Devoluy" x="-0.29828686" y="-0.23787528"/>
+	<station important="0" id="7919" dep="5" name="Orcieres" x="-0.10481119" y="-0.23589647"/>
+	<station important="0" id="7920" dep="38" name="VAUJANY-NIVO" x="-0.21671116" y="-0.030525148"/>
+	<station important="0" id="7921" dep="5" name="PUY ST VINCENT 1600" x="-0.018815905" y="-0.18143094"/>
+	<station important="1" id="7922" dep="73" name="Valloire" x="-0.037084848" y="-0.03444916"/>
+	<station important="0" id="7923" dep="5" name="LES ORRES FONTAINES" x="0.020434976" y="-0.32947427"/>
+	<station important="0" id="7924" dep="5" name="Villeneuve la Salle" x="0.008631229" y="-0.1334191"/>
+	<station important="0" id="7925" dep="5" name="Serre Chevalier" x="0.024766982" y="-0.13437998"/>
+	<station important="0" id="7926" dep="5" name="Le Monetier" x="-0.011081696" y="-0.123169005"/>
+	<station important="1" id="7927" dep="4" name="Pra Loup" x="0.03157133" y="-0.3828144"/>
+	<station important="1" id="7928" dep="74" name="Les Gets" x="0.069126606" y="0.4205257"/>
+	<station important="1" id="7929" dep="5" name="Vars" x="0.08000046" y="-0.28979427"/>
+	<station important="0" id="7931" dep="5" name="CEILLAC_NIVO" x="0.12919527" y="-0.2461701"/>
+	<station important="0" id="7933" dep="4" name="Maljasset" x="0.16343588" y="-0.2805655"/>
+	<station important="0" id="7935" dep="5" name="ST VERAN RM" x="0.17542553" y="-0.2324428"/>
+	<station important="0" id="7936" dep="5" name="ABRIES RM" x="0.21586883" y="-0.19224203"/>
+	<station important="0" id="7938" dep="6" name="BOREON" x="0.38776088" y="-0.48917204"/>
+	<station important="1" id="7939" dep="6" name="Isola" x="0.32003456" y="-0.4585461"/>
+	<station important="0" id="7940" dep="4" name="La Foux d Allos" x="0.02408874" y="-0.4178313"/>
+	<station important="0" id="7941" dep="6" name="Valberg" x="0.20762044" y="-0.49643886"/>
+	<station important="0" id="7942" dep="6" name="Auron" x="0.19920796" y="-0.4461022"/>
+	<station important="0" id="7945" dep="5" name="PELVOUX ST ANTOINE" x="-0.018137664" y="-0.15810531"/>
+</stations>
+

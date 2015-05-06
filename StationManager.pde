@@ -1,15 +1,30 @@
 // --------------------------------------------------------------------
 class Station
 {
+  // Id
   String id;
+  // Name
   String name;
+  // Importance
+  boolean isImportant = false;
+  // Altitude
   float altitude = 0.0f;
+  // Departement 
   int dep = 0;
+  // Precipitation last 24h (TEMP random)
+  float precipitation24h = random(0,100);
+  
+  // Position (latitude, longitude) on map
   de.fhpotsdam.unfolding.geo.Location loc;
+  
+  // Position on screen
   float xy[];
+
+  // Position in bounding box
   PVector posBoundingNorm = new PVector();
   RPoint posBoundingNorm2 = new RPoint(); // normalized & relative to the upper left corner of the bounding rect
   RPoint posBoundingNorm3 = new RPoint(); // normalized & relative to the center of the bounding rect
+
 
   // --------------------------------------------------------------------
   // --------------------------------------------------------------------
@@ -104,6 +119,8 @@ class StationManager extends ArrayList<Station>
       if ( keepIt )
       { 
         Station s = new Station( doc.getCellContent(i, "numer_sta"), doc.getCellContent(i, "nom usuel") );
+//println( doc.getCellContent(i, "important") );
+        s.isImportant = doc.getCellContent(i, "important").equals("1.0") ? true : false;
         s.setLocAndAltitude( doc.getCellContent(i, "latitude"), doc.getCellContent(i, "longitude"), doc.getCellContent(i, "altitude") );
         s.setDepartement( doc.getCellContent(i, "departement") );
 

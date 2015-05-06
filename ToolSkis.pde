@@ -3,23 +3,33 @@ class ToolSkis extends Tool
   RShape skiLeft;
   RShape skiRight;
   RShape skiBoth;
+  float  skiRatio = 0.0, skiRatioPrev = -1.0;
 
-  float zoom;
-  float scale;
-  PVector offset, poffset;
-  PVector mouse;
+  boolean isDrawParticles = false;
+  boolean isDrawBlobs = false;
+  boolean isDrawOffscreens = false;
+  boolean isDrawStations = true;
+  
+  PGraphics offSkiMask;
+  PGraphics offParticles,offParticlesResized,offParticlesMaskResized;
+  PImage    imgOffParticlesResized;
 
+  BlobDetection blobs;
+  float blobsTh=0.2;
+
+  PImage imgOffscreenMaskResized;
+
+  PanelZoom panelZoom = new PanelZoom();
 
   // --------------------------------------------------------------------
   // --------------------------------------------------------------------
   ToolSkis(PApplet p)
   {
     super(p);
-    zoom = 1.0;
-    offset = new PVector(0, 0);
-    poffset = new PVector(0, 0);
   }
 
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
   void initControls()
   {
     // Tab Properties
@@ -32,10 +42,19 @@ class ToolSkis extends Tool
 
     float zoomMin = 1.0;
     float zoomMax = 10.0;
-    Slider sliderZoom = cp5.addSlider("zoomPanel", zoomMin, zoomMax, 7.0, x, y, 150, 20).addListener(this);
+    Slider sliderZoom = cp5.addSlider("zoomPanel", zoomMin, zoomMax, 1.0, x, y, 150, 20).addListener(this);
     sliderZoom.moveTo(this.tabName);
+
+    y+=20;
+    float blobsThMin = 0.0;
+    float blobsThMax = 1.0;
+    Slider sliderBlobsTh = cp5.addSlider("blobsTh", blobsThMin, blobsThMax, 0.5, x, y, 150, 20).addListener(this);
+    sliderBlobsTh.moveTo(this.tabName);
+
   }
 
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
   void setup()
   {
     RShape shapeSkis = RG.loadShape("Ski Akonite 2014-1.svg");
@@ -56,37 +75,150 @@ class ToolSkis extends Tool
     skiBoth = new RShape();
     skiBoth.addChild(skiLeft);
     skiBoth.addChild(skiRight);
+    skiBoth.setFill( color(255) );
+
+    createOffscreens();
+
   }
 
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void createOffscreens()
+  {
+      float skiRatio = skiBoth.getWidth()/skiBoth.getHeight();
+      float offscreenWidth = skiBoth.getWidth(); // 500;
+      int wOffscreen = (int) offscreenWidth;
+      int hOffscreen = int(offscreenWidth/skiRatio);
+      
+      // Offscreens for particles (normal + resized)
+      println("- creating offscreen for particles, w="+wOffscreen+";h="+hOffscreen);
+      offParticles = createGraphics(wOffscreen,hOffscreen);
+      float ratio = getRatio(offParticles);
+      offParticlesResized = createGraphics(50, int(50.0/ratio));
+      offParticlesMaskResized = createGraphics(offParticlesResized.width, offParticlesResized.height);
+
+      // Offscreen for mask
+      println("- creating offscreen for ski mask");
+      offSkiMask = createGraphics( offParticlesResized.width, offParticlesResized.height );
+      skiBoth.centerIn(offSkiMask);
+      offSkiMask.beginDraw();
+      offSkiMask.background(0,255);
+      offSkiMask.translate(offSkiMask.width/2, offSkiMask.height/2);
+      offSkiMask.noStroke();
+      offSkiMask.fill(255,255);
+      RPolygon skiBothPoly = skiBoth.toPolygon();
+      skiBothPoly.draw(offSkiMask);
+      offSkiMask.endDraw();
+
+      skiBoth.centerIn(applet.g);
+
+      println("- creating blobs");
+      blobs = new BlobDetection(offParticlesMaskResized.width, offParticlesMaskResized.height);
+  }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void update()
+  {
+    // Draw particles
+    toolParticles.drawParticles(); // toolParticles knows offParticles
+    
+    // Resize (prepate for blob detection)
+    offParticlesResized.beginDraw();
+    offParticlesResized.image(offParticles, 0,0,offParticlesResized.width,offParticlesResized.height);
+    offParticlesResized.endDraw();
+    
+    // Apply Mask
+    imgOffParticlesResized = offParticlesResized.get(); 
+    imgOffParticlesResized.mask(offSkiMask);
+
+    // Blob Detection
+    blobs.setThreshold(blobsTh);
+    blobs.computeBlobs(imgOffParticlesResized.pixels);
+
+    // Draw particles with mask
+    imgOffParticlesResized = offParticlesResized.get();
+    imgOffParticlesResized.mask(offSkiMask);
+  }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
   void draw()
   {
     pushStyle();
     background(255);
-    pushMatrix();
-    translate(width/2, height/2);
-    scale(zoom);
-    // The offset (note how we scale according to the zoom)
-    translate(offset.x/zoom, offset.y/zoom);
+
+    if (isDrawOffscreens)
+    {
+      int x = 0;
+      float y = height-offSkiMask.height;
+      int gap = 10;
+      image(offSkiMask,x,y);
+
+      x+=(int)offSkiMask.width+gap;
+      image(imgOffParticlesResized,x,y);
+
+      x+=(int)imgOffParticlesResized.width+gap;
+      image(imgOffParticlesResized,x,y);
+      
+      stroke(200,0,0);
+      drawContours(x,y,imgOffParticlesResized.width,imgOffParticlesResized.height);
+
+    }
+    
+    panelZoom.begin();
 
     //    skiRight.draw();
     //drawBounding(skiRight);
     //    skiLeft.draw();
     //  drawBounding(skiLeft);
+
+    // Draw skis contour + bounding box
+    noStroke();
+    fill(255,255);
     skiBoth.draw();
     drawBounding(skiBoth);
     
     // Draw stations inside
-    fill(colorStation);
-    noStroke();
-    for (Station s : stations)
+    if (isDrawStations)
     {
-      ellipse(s.posBoundingNorm3.x*skiBoth.getWidth(), s.posBoundingNorm3.y*skiBoth.getHeight(), 5,5);    
+      fill(colorStation);
+      noStroke();
+      for (Station s : stations)
+      {
+        ellipse(s.posBoundingNorm3.x*skiBoth.getWidth(), s.posBoundingNorm3.y*skiBoth.getHeight(), 5,5);    
+      }
+    }
+    // Draw 
+    RPoint[] rect = skiBoth.getBoundsPoints();
+    if (isDrawParticles)
+    {
+      if (imgOffParticlesResized != null)
+      {
+        tint(255,100);  
+        image(imgOffParticlesResized, rect[0].x, rect[0].y, skiBoth.getWidth(), skiBoth.getHeight());    
+      }
     }
 
-    popMatrix();
+    if (isDrawBlobs)
+    {
+      if (blobs != null)
+      {
+        stroke(255,0,0);
+        pushMatrix();
+        translate(rect[0].x, rect[0].y,0);
+        drawContours(0,0,skiBoth.getWidth(), skiBoth.getHeight());
+        popMatrix();
+      }    
+    }
+
+
+    panelZoom.end();
     popStyle();
   }
 
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
   void drawBounding(RShape shape_)
   {
     RPoint[] rect = shape_.getBoundsPoints();
@@ -98,16 +230,46 @@ class ToolSkis extends Tool
     endShape();
   }
 
-  void mousePressed()
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void drawContours(float x, float y, float w, float h) 
   {
-    mouse = new PVector(mouseX, mouseY);
-    poffset.set(offset);
+    Blob b;
+    EdgeVertex eA, eB;
+    for (int n=0 ; n<blobs.getBlobNb() ; n++) 
+    {
+      b=blobs.getBlob(n);
+      if (b!=null) 
+      {
+        for (int m=0;m<b.getEdgeNb();m++) 
+        {
+          eA = b.getEdgeVertexA(m);
+          eB = b.getEdgeVertexB(m);
+          if (eA !=null && eB !=null)
+            line(
+            x+eA.x*w, y+eA.y*h, 
+            x+eB.x*w, y+eB.y*h 
+              );
+        }
+      }
+    }
   }
 
-  // Calculate the new offset based on change in mouse vs. previous offsey
+
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void mousePressed()
+  {
+    if (!cp5.isMouseOver())
+      panelZoom.mousePressed();
+  }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
   void mouseDragged() {
-    offset.x = mouseX - mouse.x + poffset.x;
-    offset.y = mouseY - mouse.y + poffset.y;
+    if (!cp5.isMouseOver())
+      panelZoom.mouseDragged();
   }
 
   // --------------------------------------------------------------------
@@ -117,8 +279,14 @@ class ToolSkis extends Tool
     String nameSource = theEvent.name();
     if (nameSource.equals("zoomPanel"))
     {
-        zoom = theEvent.value();
+        panelZoom.setZoom( theEvent.value() );
     }
+    else if (nameSource.equals("blobsTh"))
+    {
+        blobsTh = theEvent.value() ;
+    }
+
+
   }
 }
 

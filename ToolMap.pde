@@ -12,6 +12,7 @@ class ToolMap extends Tool implements MapEventListener
 
   // Bounding box for geoloc points, screen related
   Rect boundingStations = new Rect();
+  Rect boundingStationsPrev = new Rect();
 
   // Properties
   //  boolean isDrawLinks = true;
@@ -187,14 +188,15 @@ class ToolMap extends Tool implements MapEventListener
     {
       station.computePositionBounding(boundingStations);
     }
+
+    // Create or resize offscreen
+    // ratio changed ??? 
   }
 
   // --------------------------------------------------------------------
   // --------------------------------------------------------------------
   void draw()
   {
-    update();
-
     // Draw
     carte.draw();  
 
@@ -247,6 +249,78 @@ class ToolMap extends Tool implements MapEventListener
     else
       registerEvents(true);
   }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void exportXML()
+  {
+    float w = 1;
+    float h = toolSkis.skiBoth.getHeight()/toolSkis.skiBoth.getWidth();
+    
+    String xml="<stations w=\""+w+"\" h=\""+h+"\">\n";
+    for (Station station : stations) 
+    {
+      float x = station.posBoundingNorm3.x;
+      float y = -station.posBoundingNorm3.y;
+      
+      xml+="\t<station important=\"" + (station.isImportant ? "1":"0") +"\" id=\""+split(station.id, ".")[0]+"\" dep=\""+station.dep+"\" name=\""+station.name+"\" x=\""+x+"\" y=\""+y+"\"/>\n";      
+    }
+    xml+="</stations>\n";
+
+    String[] xmlStrings = new String[1];
+    xmlStrings[0] = xml;
+    saveStrings("akonite_digital_stations.xml", xmlStrings);
+
+  }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void exportPDF()
+  {
+    String suffix = "";
+
+    String sep = "";
+    for (int i=0;i<filterStationDep.length;i++)
+    {
+      suffix += sep+filterStationDep[i];
+      sep = "_";
+    }
+    
+    String filename = "export_dep_"+suffix+".pdf";
+
+    
+    int w = (int)toolSkis.skiBoth.getWidth()*2;
+    int h = (int)toolSkis.skiBoth.getHeight()*2;
+    PGraphics pdf = createGraphics(w, h, PDF, filename);
+    pdf.beginDraw();
+    pdf.background(255);
+    pdf.noStroke();
+    pdf.fill(0);
+    for (Station station : stations) 
+    {
+      pdf.ellipse(station.posBoundingNorm.x*w, station.posBoundingNorm.y*h, 10,10);      
+    }
+    endRecord();
+
+    pdf.dispose();
+    pdf.endDraw();
+  }
+
+  // --------------------------------------------------------------------
+  // --------------------------------------------------------------------
+  void keyPressed()
+  {
+    if (key == 'x')
+    {
+      exportXML();
+    }
+    else if (key == 'p')
+    {
+      exportPDF();
+    }
+  }
+
+
 
   // --------------------------------------------------------------------
   // --------------------------------------------------------------------

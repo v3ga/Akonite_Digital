@@ -1,3 +1,21 @@
+import org.apache.poi.ss.usermodel.Sheet;
+import java.io.*;
+
+// --------------------------------------------
+DocumentExcel loadDocumentExcel(String path)
+{
+  return loadDocumentExcel("__unnamed__", path);
+}
+
+// --------------------------------------------
+DocumentExcel loadDocumentExcel(String path, int sheetId, int rowHeader)
+{
+  DocumentExcel document = new DocumentExcel("__unnamed__",path);
+  document.setRowHeader(rowHeader);
+  document.load(sheetId);
+  return document;
+}
+
 // --------------------------------------------
 DocumentExcel loadDocumentExcel(String name, String path)
 {
@@ -13,6 +31,8 @@ class DocumentExcel
   String path;
   Workbook workbook = null;
   Sheet sheet;
+  int sheetId=0;
+  int rowHeader = 0;
 
   int nbColumns = 0;
   int nbRows = 0;
@@ -27,6 +47,18 @@ class DocumentExcel
     this.path = path_;
   }
 
+  // --------------------------------------------
+  void setRowHeader(int r)
+  {
+    this.rowHeader = r;
+  }
+
+  // --------------------------------------------
+  void load(int sheetId)
+  {
+    this.sheetId = sheetId;
+    load();
+  }
 
   // --------------------------------------------
   void load()
@@ -36,18 +68,19 @@ class DocumentExcel
     {
       file = new FileInputStream(this.path);
       this.workbook = WorkbookFactory.create(file);
-      this.sheet = this.workbook.getSheetAt(0);
+      this.sheet = this.workbook.getSheetAt(sheetId);
 
       println("- loaded "+this.path);
 
       this.nbRows = this.sheet.getLastRowNum();
       this.nbColumns = this.getColumnNb();
 
+      println(" - row header : "+this.rowHeader);
       println(" - num lines : "+this.nbRows);
       println(" - num cols : "+this.nbColumns);
 
       header = new HashMap<String, Integer>(this.nbColumns);
-      Row rowHeader = sheet.getRow(0);
+      Row rowHeader = sheet.getRow(this.rowHeader);
       for (int col=0; col<nbColumns; col++)
       {
         header.put( getCellContent(rowHeader, col).toLowerCase(), col );
@@ -58,6 +91,9 @@ class DocumentExcel
       println("- ERROR : "+e);
     }
   }
+
+  // --------------------------------------------
+  
 
   // --------------------------------------------
   String getCellContent(Row row, int col)
